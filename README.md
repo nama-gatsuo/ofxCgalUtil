@@ -4,7 +4,8 @@ openFrameworks addon to bridge CGAL. Currently aiming to support Windows only.
 ## 0. About CGAL
 * The Computational Geometry Algorithms Library [CGAL](https://www.cgal.org/)
 * [Installation](https://www.cgal.org/download.html)
-  * Build library along with the documents
+  * Build library along with [the documents](https://www.cgal.org/download/windows.html)
+  * For boost library files, it may be simpler to download binaries from [sourceforge](https://sourceforge.net/projects/boost/files/boost-binaries/) than to build from source by yourself.
 * After the installation, check your environment variables to have `CGAL_DIR`, `BOOST_INCLUDEDIR`, `BOOST_LIBRARYDIR`.
 
 ## 1. Build your project
