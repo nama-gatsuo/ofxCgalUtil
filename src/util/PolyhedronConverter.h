@@ -5,15 +5,15 @@
 namespace Converter {
 
 	template<class Kernel>
-	static CGAL::Polyhedron_3<Kernel> getPolyhedron(const ofMesh& mesh) {
+	static CGAL::Polyhedron_3<Kernel> mesh_to_poly(const ofMesh& mesh) {
 		CGAL::Polyhedron_3<Kernel> polyhedron;
-		PolyhedronBuilder<HalfedgeDS> builder(mesh);
+		Mesh_to_polyhedron<CGAL::Polyhedron_3<Kernel>::HalfedgeDS> builder(mesh);
 		polyhedron.delegate(builder);
 		return polyhedron;
 	}
 
 	template<class Kernel>
-	static ofMesh getMesh(const CGAL::Polyhedron_3<Kernel>& poly) {
+	static ofMesh poly_to_mesh(const CGAL::Polyhedron_3<Kernel>& poly) {
 		using P = Kernel::Point_3;
 
 		ofMesh mesh;
@@ -38,5 +38,14 @@ namespace Converter {
 
 		return mesh;
 	}
+
+	template <class Poly_dst, class Poly_src>
+	static Poly_dst poly_cast(const Poly_src& poly_a) {
+		Poly_dst p;
+		Copy_polyhedron<Poly_src, Poly_dst> modifier(poly_a);
+		p.delegate(modifier);
+		return p;
+	}
+
 
 };
