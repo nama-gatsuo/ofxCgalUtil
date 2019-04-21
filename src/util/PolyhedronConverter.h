@@ -4,17 +4,17 @@
 
 namespace Converter {
 
-	template<class Kernel>
-	static CGAL::Polyhedron_3<Kernel> mesh_to_poly(const ofMesh& mesh) {
-		CGAL::Polyhedron_3<Kernel> polyhedron;
-		Mesh_to_polyhedron<CGAL::Polyhedron_3<Kernel>::HalfedgeDS> builder(mesh);
+	template<class K>
+	static CGAL::Polyhedron_3<K> mesh_to_poly(const ofMesh& mesh) {
+		CGAL::Polyhedron_3<K> polyhedron;
+		Mesh_to_polyhedron<CGAL::Polyhedron_3<K>::HalfedgeDS> builder(mesh);
 		polyhedron.delegate(builder);
 		return polyhedron;
 	}
 
-	template<class Kernel>
-	static ofMesh poly_to_mesh(const CGAL::Polyhedron_3<Kernel>& poly) {
-		using P = Kernel::Point_3;
+	template<class K>
+	static ofMesh poly_to_mesh(const CGAL::Polyhedron_3<K>& poly) {
+		using P = K::Point_3;
 
 		ofMesh mesh;
 		std::map<P, int> pointIndices;
