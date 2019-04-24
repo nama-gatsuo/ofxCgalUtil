@@ -28,11 +28,11 @@ public:
 
 			if (mesh.getMode() == OF_PRIMITIVE_TRIANGLES) {
 				const auto& indices = mesh.getIndices();
-				for (int i = 0; i < nIndices; i += 3) {
+				for (int i = 0; i < nFaces; i++) {
 					B.begin_facet();
-					B.add_vertex_to_facet(indices[i + 0]);
-					B.add_vertex_to_facet(indices[i + 1]);
-					B.add_vertex_to_facet(indices[i + 2]);
+					B.add_vertex_to_facet(indices[i * 3 + 0]);
+					B.add_vertex_to_facet(indices[i * 3 + 1]);
+					B.add_vertex_to_facet(indices[i * 3 + 2]);
 					B.end_facet();
 				}
 			} else {

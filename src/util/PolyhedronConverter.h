@@ -21,7 +21,7 @@ namespace Converter {
 		int count = 0;
 
 		for (auto it = poly.vertices_begin(); it != poly.vertices_end(); ++it) {
-			P& p = it->point();
+			const P& p = it->point();
 			float x = CGAL::to_double(p.x());
 			float y = CGAL::to_double(p.y());
 			float z = CGAL::to_double(p.z());
