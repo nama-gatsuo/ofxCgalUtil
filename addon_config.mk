@@ -18,3 +18,5 @@ vs:
 	ADDON_DLLS_TO_COPY += "lib\CGAL-4.14\bin\CGAL-vc140-mt-gd-4.14.pdb"
 	ADDON_DLLS_TO_COPY += "lib\CGAL-4.14\bin\CGAL-vc140-mt-gd-4.14.dll"
 	ADDON_DLLS_TO_COPY += "lib\CGAL-4.14\bin\CGAL-vc140-mt-4.14.dll"
+	ADDON_DLLS_TO_COPY += "lib\CGAL-4.14\auxiliary\gmp\lib\libgmp-10.dll"
+	ADDON_DLLS_TO_COPY += "lib\CGAL-4.14\auxiliary\gmp\lib\libmpfr-4.dll"
