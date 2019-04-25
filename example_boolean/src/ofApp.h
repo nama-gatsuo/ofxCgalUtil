@@ -14,6 +14,5 @@ class ofApp : public ofBaseApp{
 public:
 	ofEasyCam cam;
 	ofMesh result;
-	ofMesh base;
 		
 };
