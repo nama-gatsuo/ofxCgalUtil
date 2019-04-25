@@ -2,18 +2,18 @@
 #include "PolyhedronBuilder.h"
 #include "CGAL/Polyhedron_3.h"
 
-namespace Converter {
-
+namespace ofxCgalUtil {
+	
 	template<class K>
-	static CGAL::Polyhedron_3<K> mesh_to_poly(const ofMesh& mesh) {
-		CGAL::Polyhedron_3<K> polyhedron;
-		Mesh_to_polyhedron<CGAL::Polyhedron_3<K>::HalfedgeDS> builder(mesh);
+	static Polyhedron<K> getPolyFromMesh(const ofMesh& mesh) {
+		Polyhedron<K> polyhedron;
+		Mesh_to_polyhedron<typename Polyhedron<K>::HalfedgeDS> builder(mesh);
 		polyhedron.delegate(builder);
 		return polyhedron;
 	}
 
 	template<class K>
-	static ofMesh poly_to_mesh(const CGAL::Polyhedron_3<K>& poly) {
+	static ofMesh getMeshFromPoly(const Polyhedron<K>& poly) {
 		using P = K::Point_3;
 
 		ofMesh mesh;
@@ -39,13 +39,13 @@ namespace Converter {
 		return mesh;
 	}
 
-	template <class Poly_dst, class Poly_src>
-	static Poly_dst poly_cast(const Poly_src& poly_a) {
-		Poly_dst p;
-		Copy_polyhedron<Poly_src, Poly_dst> modifier(poly_a);
-		p.delegate(modifier);
-		return p;
+	template <class K0, class K1>
+	static Polyhedron<K1> poly_cast(const Polyhedron<K0>& poly_src) {
+		Polyhedron<K1> poly_dst;
+		Copy_polyhedron<K0, K1> modifier(poly_src);
+		poly_dst.delegate(modifier);
+		return poly_dst;
 	}
-
-
+	
+	
 };
