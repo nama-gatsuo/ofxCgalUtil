@@ -12,7 +12,18 @@ openFrameworks addon to bridge CGAL. Currently supporting Windows only.
   * openFrameworks itself also has the dependency on boost only for file-io which isn't sufficient to compile CGAL.
 
 ## 1. Build your project
-* Locate CGAL files in `ofxCgalUtil\lib\`
+* Locate CGAL files into `ofxCgalUtil\lib\`
+  ```
+  lib
+    L CGAL-4.14
+      L auxiliary
+        L gmp
+          L include   // locate files in CGAL-4.14\auxiliary\gmp\include
+          L lib       // locate files in CGAL-4.14\auxiliary\gmp\lib
+      L include       // locate files in CGAL-4.14\include
+      L libs          // locate files in CGAL-4.14\lib
+      L bin           // locate files in CGAL-4.14\bin
+  ```
 * Replace boost libs and includes in `of_root\libs\boost` with files of the same version that you used to build CGAL.
 * Using Project Generator(PG), update your oF project directory.
 * If using Debug mode, you will need to set `\bigobj` option for compilation since CGAL and boost has so many template function.
