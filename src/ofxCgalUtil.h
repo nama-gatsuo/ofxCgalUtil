@@ -5,6 +5,7 @@
 #endif
 
 #include "Types.h"
+#include "Utilities.h"
 #include "PolyhedronConverter.h"
 #include "Triangulation3d.h"
 #include "operation/CutByPlane.h"

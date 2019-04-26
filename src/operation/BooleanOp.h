@@ -27,7 +27,10 @@ namespace ofxCgalUtil {
 	}
 
 	static ofMesh booleanOperation(const ofMesh& mesh0, const ofMesh& mesh1, BoolOpType type) {
-		NefPolyhedron result(booleanOperation(getPolyFromMesh<EPEC>(mesh0), getPolyFromMesh<EPEC>(mesh1), type));
+		auto n0 = getPolyFromMesh<EPEC>(mesh0);
+		auto n1 = getPolyFromMesh<EPEC>(mesh1);
+
+		NefPolyhedron result(booleanOperation(n0, n1, type));
 		
 		Polyhedron<EPEC> poly;
 		result.convert_to_polyhedron(poly);

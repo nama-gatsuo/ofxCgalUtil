@@ -1,6 +1,7 @@
 #pragma once
 #include "PolyhedronBuilder.h"
 #include "CGAL/Polyhedron_3.h"
+#include "CGAL/Polygon_mesh_processing/merge_border_vertices.h"
 
 namespace ofxCgalUtil {
 	
@@ -9,6 +10,7 @@ namespace ofxCgalUtil {
 		Polyhedron<K> polyhedron;
 		Mesh_to_polyhedron<typename Polyhedron<K>::HalfedgeDS> builder(mesh);
 		polyhedron.delegate(builder);
+		//CGAL::Polygon_mesh_processing::merge_duplicated_vertices_in_boundary_cycles(polyhedron);
 		return polyhedron;
 	}
 
