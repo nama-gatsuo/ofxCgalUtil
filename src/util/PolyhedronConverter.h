@@ -10,7 +10,7 @@ namespace ofxCgalUtil {
 		Polyhedron<K> polyhedron;
 		Mesh_to_polyhedron<typename Polyhedron<K>::HalfedgeDS> builder(mesh);
 		polyhedron.delegate(builder);
-		//CGAL::Polygon_mesh_processing::merge_duplicated_vertices_in_boundary_cycles(polyhedron);
+		CGAL::Polygon_mesh_processing::merge_duplicated_vertices_in_boundary_cycles(polyhedron);
 		return polyhedron;
 	}
 

@@ -27,7 +27,7 @@ openFrameworks addon to bridge CGAL. Currently supporting Windows only.
 * Replace boost libs and includes in `of_root\libs\boost` with files of the same version that you used to build CGAL.
 * Using Project Generator(PG), update your oF project directory.
 * If using Debug mode, you will need to set `\bigobj` option for compilation since CGAL and boost has so many template functions which will cause [exceeding the limitation of .obj files](https://docs.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/fatal-error-c1128?view=vs-2019).
-  * `properties(configuration: Debug)` > `C/C++` > `All Options` > `Additional Options`, type `\bigobj`.
+  * `properties(configuration: Debug)` > `C/C++` > `All Options` > `Additional Options`, type `/bigobj`.
 
 
 ## 2. Liscene
