@@ -6,6 +6,8 @@
 
 namespace ofxCgalUtil {
 
+	const static int scalarForNef = 1e5;
+
 	template<class HDS>
 	class Mesh_to_polyhedron : public CGAL::Modifier_base<HDS> {
 	public:
@@ -26,7 +28,9 @@ namespace ofxCgalUtil {
 
 				const auto& vertices = mesh.getVertices();
 				for (auto& v : vertices) {
-					builder.add_vertex(Point(v.x, v.y, v.z));
+					builder.add_vertex(Point(
+						int(v.x * scalarForNef), int(v.y * scalarForNef), int(v.z * scalarForNef)
+					));
 				}
 
 				if (mesh.getMode() == OF_PRIMITIVE_TRIANGLES) {

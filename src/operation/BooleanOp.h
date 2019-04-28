@@ -27,15 +27,19 @@ namespace ofxCgalUtil {
 	}
 
 	static ofMesh booleanOperation(const ofMesh& mesh0, const ofMesh& mesh1, BoolOpType type) {
-		auto n0 = getPolyFromMesh<EPEC>(mesh0);
-		auto n1 = getPolyFromMesh<EPEC>(mesh1);
-
-		NefPolyhedron result(booleanOperation(n0, n1, type));
 		
-		Polyhedron<EPEC> poly;
-		result.convert_to_polyhedron(poly);
+		ofLogVerbose("ofxCgalUtil::booleanOperation") << "start";
+		float start = ofGetElapsedTimef();
 
-		return getMeshFromPoly(poly);
+		auto n0 = getNefPolyFromMesh(mesh0);
+		auto n1 = getNefPolyFromMesh(mesh1);
+
+		auto result(getMeshFromNefPoly(booleanOperation(n0, n1, type)));
+
+		float end = ofGetElapsedTimef();
+		ofLogVerbose("ofxCgalUtil::booleanOperation") << "end after " << end - start << " sec.";
+
+		return result;
 	}
 
 }
