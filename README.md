@@ -21,7 +21,7 @@ openFrameworks addon to bridge CGAL. Currently supporting Windows only.
           L include   // locate files in CGAL-4.14\auxiliary\gmp\include
           L lib       // locate files in CGAL-4.14\auxiliary\gmp\lib
       L include       // locate files in CGAL-4.14\include
-      L libs          // locate files in CGAL-4.14\lib
+      L lib           // locate files in CGAL-4.14\lib
       L bin           // locate files in CGAL-4.14\bin
   ```
 * Replace boost libs and includes in `of_root\libs\boost` with files of the same version that you used to build CGAL.

@@ -13,7 +13,7 @@ vs:
 
 	ADDON_LIBS     += "lib\CGAL-4.14\auxiliary\gmp\lib\libgmp-10.lib"
 	ADDON_LIBS     += "lib\CGAL-4.14\auxiliary\gmp\lib\libmpfr-4.lib"
-	ADDON_LIBS     += "lib\CGAL-4.14\libs\ "
+	ADDON_LIBS     += "lib\CGAL-4.14\lib\ "
 
 	ADDON_DLLS_TO_COPY += "lib\CGAL-4.14\bin\CGAL-vc140-mt-gd-4.14.pdb"
 	ADDON_DLLS_TO_COPY += "lib\CGAL-4.14\bin\CGAL-vc140-mt-gd-4.14.dll"
