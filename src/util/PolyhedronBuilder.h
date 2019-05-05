@@ -6,7 +6,7 @@
 
 namespace ofxCgalUtil {
 
-	const static int scalarForNef = 1e5;
+	const static int scalarForNef = 1e2;
 
 	template<class HDS>
 	class Mesh_to_polyhedron : public CGAL::Modifier_base<HDS> {
@@ -38,8 +38,8 @@ namespace ofxCgalUtil {
 					for (int i = 0; i < nIndices; i += 3) {
 						builder.begin_facet();
 						builder.add_vertex_to_facet(indices[i + 0]);
-						builder.add_vertex_to_facet(indices[i + 1]);
 						builder.add_vertex_to_facet(indices[i + 2]);
+						builder.add_vertex_to_facet(indices[i + 1]);
 						builder.end_facet();
 					}
 				} else {
