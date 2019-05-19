@@ -37,8 +37,9 @@ namespace ofxCgalUtil {
 	}
 
 	static double areaOfTriangle(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) {
-		glm::vec3 e3 = glm::cross(v1 - v0, v2 - v0);
-		return 0.5 * length(e3);
+		glm::vec3 a(v2 - v0), b(v1 - v0);
+		float area = 0.5 * std::sqrt(glm::length2(a) * glm::length2(b) - glm::pow(glm::dot(a, b), 2.));
+		return area;
 	}
 
 	static ofMesh mergeDuplicateComponents(const ofMesh& mesh) {

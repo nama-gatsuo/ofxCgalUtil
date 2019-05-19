@@ -36,8 +36,7 @@ public:
 
 			for (int i = 0; i < 4; i++) {
 				P p = cell->vertex(i)->point();
-				
-				result[ti][i] = glm::vec3(p.x(), p.y(), p.z());
+				result[ti][i] = glm::vec3(CGAL::to_double(p.x()), CGAL::to_double(p.y()), CGAL::to_double(p.z()));
 			}
 			ti++;
 		

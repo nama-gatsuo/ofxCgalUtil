@@ -18,5 +18,7 @@ namespace ofxCgalUtil {
 	using Polyhedron = CGAL::Polyhedron_3<K>;
 	
 	using NefPolyhedron = CGAL::Nef_polyhedron_3<HEI>;
+
+	const static int scalarForNef = 1e4;
 }
 

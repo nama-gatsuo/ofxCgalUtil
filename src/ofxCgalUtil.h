@@ -4,12 +4,12 @@
 #undef PI
 #endif
 
-#include "Types.h"
-#include "Utilities.h"
-#include "PolyhedronConverter.h"
-#include "Triangulation3d.h"
+#include "util/Types.h"
+#include "util/Utilities.h"
+#include "util/PolyhedronConverter.h"
+#include "util/Triangulation3d.h"
 #include "operation/BooleanOp.h"
-#include "Bevel.h"
+#include "operation/Bevel.h"
 //#include "PlatonicSolidBuilder.h"
 
 #ifndef PI

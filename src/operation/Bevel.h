@@ -2,6 +2,7 @@
 #include "Types.h"
 #include "CGAL/Polygon_mesh_processing/compute_normal.h"
 #include "CGAL/Polygon_mesh_processing/clip.h"
+#include "ofLog.h"
 
 namespace ofxCgalUtil {
 	
@@ -23,10 +24,10 @@ namespace ofxCgalUtil {
 		return V(n.x, n.y, n.z);
 	}
 
-	namespace PMP = CGAL::Polygon_mesh_processing;
-
 	template<class K>
 	static void bevelVertex(Polyhedron<K>& p, typename Polyhedron<K>::Vertex& v, float dist) {
+
+		namespace PMP = CGAL::Polygon_mesh_processing;
 
 		K::Vector_3 normal = PMP::compute_vertex_normal(v, p);
 
@@ -43,6 +44,9 @@ namespace ofxCgalUtil {
 
 	template<class K>
 	static Polyhedron<K> bevelAllVertices(Polyhedron<K>& p, float dist, bool isRegularPolyhedron = false) {
+		
+		namespace PMP = CGAL::Polygon_mesh_processing;
+
 		Polyhedron<K> result(p);
 
 		for (auto it = p.vertices_begin(); it != p.vertices_end(); ++it) {
@@ -71,23 +75,34 @@ namespace ofxCgalUtil {
 	static Polyhedron<K> bevelEdges(Polyhedron<K>& p, float dist) {
 
 		Polyhedron<K> result(p);
-		
+
+		namespace PMP = CGAL::Polygon_mesh_processing;
+		using HalfedgeHandle = typename Polyhedron<K>::Halfedge_handle;
+
+		//std::vector<HalfedgeHandle> edges;
+
 		for (auto it = p.halfedges_begin(); it != p.halfedges_end(); ++it) {
+
+			/*bool isSameEdge = false;
+			for (auto& e : edges) {
+				isSameEdge = it->opposite() == e;
+				if (isSameEdge) break;
+			}
+			if (isSameEdge) continue;*/
 
 			bool isDsModified = false;
 
 			auto n0 = getNormalized(getFacetNormal<K>(*it->facet()));
 			auto n1 = getNormalized(getFacetNormal<K>(*(it->opposite()->facet())));
 
-			ofLogNotice("n0") << n0;
-			ofLogNotice("n1") << n1;
+			//ofLogNotice("n0") << n0;
+			//ofLogNotice("n1") << n1;
 
 			if (CGAL::is_one(n0 * n1)) {
 				// if normals are looking at same direction, 
 				// we merge 2 faces by erasing halfedge
 				//CGAL::HalfedgeDS_decorator<Polyhedron<K>::HalfedgeDS> decorator(p.hds());
 				//p.join_facet(it);
-				//isDsModified = true;
 			} else {
 				K::Vector_3 n = getNormalized(n0 + n1);
 
@@ -104,7 +119,8 @@ namespace ofxCgalUtil {
 				K::Plane_3 plane(start, n);
 				PMP::clip(result, plane, PMP::parameters::clip_volume(true).use_compact_clipper(true));
 			}
-		
+			
+			//edges.push_back(it);
 		}
 		
 		return result;

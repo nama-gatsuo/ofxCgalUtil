@@ -6,8 +6,6 @@
 
 namespace ofxCgalUtil {
 
-	const static int scalarForNef = 1e2;
-
 	template<class HDS>
 	class Mesh_to_polyhedron : public CGAL::Modifier_base<HDS> {
 	public:
