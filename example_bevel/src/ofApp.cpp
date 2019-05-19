@@ -7,12 +7,12 @@ void ofApp::setup(){
 	
 	using namespace ofxCgalUtil;
 
-	ScopedTimer t("creation");
+	//ScopedTimer t("creation");
 
 	ofMesh m0 = ofMesh::box(200., 200., 200., 1, 1, 1);
 	m0 = mergeDuplicateComponents(m0);
 	auto p0 = getPolyFromMesh<EPEC>(m0);
-	//auto p1 = bevelAllVertices(p0, 40., true);
+	 auto p1 = bevelAllVertices(p0, 40., true);
 	result = getMeshFromPoly(bevelEdges(p0, 10.));
 }
 

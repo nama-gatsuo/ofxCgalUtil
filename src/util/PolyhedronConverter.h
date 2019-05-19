@@ -35,9 +35,18 @@ namespace ofxCgalUtil {
 		}
 
 		for (auto it = poly.facets_begin(); it != poly.facets_end(); ++it) {
-			mesh.addIndex(pointIndices[it->halfedge()->vertex()->point()]);
-			mesh.addIndex(pointIndices[it->halfedge()->next()->vertex()->point()]);
-			mesh.addIndex(pointIndices[it->halfedge()->prev()->vertex()->point()]);
+			int triNum = it->size() - 2;
+			int count = 0;
+			auto start = it->halfedge()->prev();
+			auto he = start->next();
+			// triangulate by fan
+			do {
+				mesh.addIndex(pointIndices[start->vertex()->point()]);
+				mesh.addIndex(pointIndices[he->vertex()->point()]);
+				mesh.addIndex(pointIndices[he->next()->vertex()->point()]);
+				he = he->next();
+				count++;
+			} while (count < triNum);
 		}
 
 		return mesh;

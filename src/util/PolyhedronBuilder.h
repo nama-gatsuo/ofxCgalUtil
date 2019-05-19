@@ -47,7 +47,6 @@ namespace ofxCgalUtil {
 				}
 			}
 			builder.end_surface();
-
 		}
 	private:
 		const ofMesh& mesh;
@@ -87,8 +86,7 @@ namespace ofxCgalUtil {
 			Index index(in_poly.vertices_begin(), in_poly.vertices_end());
 
 			// create facets
-			for (auto fi = in_poly.facets_begin(); fi != in_poly.facets_end(); ++fi)
-			{
+			for (auto fi = in_poly.facets_begin(); fi != in_poly.facets_end(); ++fi) {
 				HFCC hc = fi->facet_begin();
 				HFCC hc_end = hc;
 				builder.begin_facet();

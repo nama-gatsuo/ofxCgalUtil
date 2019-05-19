@@ -1,10 +1,7 @@
 #pragma once
 #include "Types.h"
 #include "CGAL/Polygon_mesh_processing/compute_normal.h"
-//#include "CGAL/polyhedron_cut_plane_3.h"
 #include "CGAL/Polygon_mesh_processing/clip.h"
-//#include "CGAL/Polyhedron_3.h"
-#include "CGAL/number_utils.h"
 
 namespace ofxCgalUtil {
 	
@@ -21,7 +18,7 @@ namespace ofxCgalUtil {
 	}
 
 	template<class V>
-	typename V getNormalized(V v) {
+	V getNormalized(V v) {
 		glm::vec3 n = glm::normalize(glm::vec3(CGAL::to_double(v.x()), CGAL::to_double(v.y()), CGAL::to_double(v.z())));
 		return V(n.x, n.y, n.z);
 	}
@@ -76,17 +73,38 @@ namespace ofxCgalUtil {
 		Polyhedron<K> result(p);
 		
 		for (auto it = p.halfedges_begin(); it != p.halfedges_end(); ++it) {
-			
+
+			bool isDsModified = false;
+
 			auto n0 = getNormalized(getFacetNormal<K>(*it->facet()));
 			auto n1 = getNormalized(getFacetNormal<K>(*(it->opposite()->facet())));
 
-			if (!CGAL::is_one(n0 * n1)) {
-				K::Vector_3 n = (n0 + n1);
-				K::Point_3 start = it->vertex()->point() - n * K::FT(dist * scalarForNef);	
+			ofLogNotice("n0") << n0;
+			ofLogNotice("n1") << n1;
+
+			if (CGAL::is_one(n0 * n1)) {
+				// if normals are looking at same direction, 
+				// we merge 2 faces by erasing halfedge
+				//CGAL::HalfedgeDS_decorator<Polyhedron<K>::HalfedgeDS> decorator(p.hds());
+				//p.join_facet(it);
+				//isDsModified = true;
+			} else {
+				K::Vector_3 n = getNormalized(n0 + n1);
+
+				K::Point_3 p0 = it->prev()->vertex()->point();
+				K::Point_3 p1 = it->vertex()->point();
+
+				K::Point_3 mid(
+					(p0.x() + p1.x()) * K::FT(0.5),
+					(p0.y() + p1.y()) * K::FT(0.5),
+					(p0.z() + p1.z()) * K::FT(0.5)
+				);
+
+				K::Point_3 start = mid - n * K::FT(dist * scalarForNef);
 				K::Plane_3 plane(start, n);
-				
 				PMP::clip(result, plane, PMP::parameters::clip_volume(true).use_compact_clipper(true));
 			}
+		
 		}
 		
 		return result;
