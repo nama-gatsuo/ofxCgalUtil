@@ -72,6 +72,35 @@ namespace ofxCgalUtil {
 	}
 
 	template<class K>
+	static Polyhedron<K> bevelAllVertices(Polyhedron<K>& target, Polyhedron<K>& base, float dist, bool isRegularPolyhedron = false) {
+
+		namespace PMP = CGAL::Polygon_mesh_processing;
+
+		Polyhedron<K> result(target);
+
+		for (auto it = base.vertices_begin(); it != base.vertices_end(); ++it) {
+			K::Vector_3 normal;
+			if (isRegularPolyhedron) {
+				auto n = getNormalized(it->point());
+				normal = K::Vector_3(n.x(), n.y(), n.z());
+			} else {
+				normal = PMP::compute_vertex_normal(it, base);
+			}
+
+			K::Point_3 start = it->point() - normal * K::FT(dist * scalarForNef);
+			K::Plane_3 plane = K::Plane_3(start, normal);
+
+			if (!CGAL::Polygon_mesh_processing::does_self_intersect(result)) {
+				PMP::clip(result, plane, PMP::parameters::clip_volume(true).use_compact_clipper(true));
+			} else {
+				ofLogWarning("ofxCgalUtil::bevelEdge") << "polygon has self intersection.";
+			}
+		}
+
+		return result;
+	}
+
+	template<class K>
 	static Polyhedron<K> bevelEdges(Polyhedron<K>& p, float dist) {
 
 		Polyhedron<K> result(p);
@@ -79,18 +108,20 @@ namespace ofxCgalUtil {
 		namespace PMP = CGAL::Polygon_mesh_processing;
 		using HalfedgeHandle = typename Polyhedron<K>::Halfedge_handle;
 
-		//std::vector<HalfedgeHandle> edges;
+		std::vector<HalfedgeHandle> edges;
 
 		for (auto it = p.halfedges_begin(); it != p.halfedges_end(); ++it) {
 
-			/*bool isSameEdge = false;
+			bool isSameEdge = false;
 			for (auto& e : edges) {
 				isSameEdge = it->opposite() == e;
 				if (isSameEdge) break;
 			}
-			if (isSameEdge) continue;*/
 
-			bool isDsModified = false;
+			if (isSameEdge) {
+				ofLogNotice("ofxCgalUtil::bevelEdges") << "skip opposite edge";
+				continue;
+			}
 
 			auto n0 = getNormalized(getFacetNormal<K>(*it->facet()));
 			auto n1 = getNormalized(getFacetNormal<K>(*(it->opposite()->facet())));
@@ -120,9 +151,17 @@ namespace ofxCgalUtil {
 				PMP::clip(result, plane, PMP::parameters::clip_volume(true).use_compact_clipper(true));
 			}
 			
-			//edges.push_back(it);
+			edges.push_back(it);
 		}
 		
+		return result;
+	}
+
+	template<class K>
+	static Polyhedron<K> bevelEdgesAndVerts(Polyhedron<K>& p, float edgeDsit, float vertDist) {
+		Polyhedron<K> base(p);
+		Polyhedron<K> result = bevelEdges(p, edgeDsit);
+		result = bevelAllVertices(result, base, vertDist);
 		return result;
 	}
 
