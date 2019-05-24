@@ -1,6 +1,6 @@
 #pragma once
 #include "Types.h"
-#include "CGAL/Polygon_mesh_processing/compute_normal.h"
+//#include "CGAL/Polygon_mesh_processing/compute_normal.h"
 #include "CGAL/Polygon_mesh_processing/clip.h"
 #include "ofLog.h"
 
@@ -11,9 +11,9 @@ namespace ofxCgalUtil {
 
 		auto e = facet.halfedge();
 
-		auto p0 = e->vertex()->point();
-		auto p1 = e->next()->vertex()->point();
-		auto p2 = e->next()->next()->vertex()->point();
+		auto p0 = e->prev()->vertex()->point();
+		auto p1 = e->vertex()->point();
+		auto p2 = e->next()->vertex()->point();
 
 		return CGAL::cross_product(p1 - p0, p2 - p0);
 	}
@@ -161,7 +161,7 @@ namespace ofxCgalUtil {
 	static Polyhedron<K> bevelEdgesAndVerts(Polyhedron<K>& p, float edgeDsit, float vertDist) {
 		Polyhedron<K> base(p);
 		Polyhedron<K> result = bevelEdges(p, edgeDsit);
-		result = bevelAllVertices(result, base, vertDist);
+		result = bevelAllVertices(result, base, vertDist, true);
 		return result;
 	}
 

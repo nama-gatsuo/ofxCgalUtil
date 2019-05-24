@@ -103,7 +103,7 @@ namespace ofxCgalUtil {
 
 		return result;
 	}
-
+	
 	
 
 };
