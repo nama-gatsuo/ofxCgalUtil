@@ -5,11 +5,61 @@
 #include "PolyhedronConverter.h"
 namespace ofxCgalUtil {
 
-	template<class HDS>
-	class BoxBuilder : public CGAL::Modifier_base<HDS> {
-	public:
+	struct PolyhedronData {
+		std::vector<std::vector<int>> indices;
+		std::vector<std::vector<float>> points;
+	};
 
-		BoxBuilder() {}
+	const static PolyhedronData BoxData{
+		{
+			{ 0, 3, 2, 1 }, { 0, 1, 7, 4 },
+			{ 1, 2, 6, 7 }, { 2, 3, 5, 6 },
+			{ 3, 0, 4, 5 }, { 4, 7, 6, 5 }
+		},
+		{
+			{ -1, 1, -1 }, { 1, 1, -1 }, { 1, 1, 1 }, { -1, 1, 1 },
+			{-1, -1, -1 }, { -1, -1, 1 }, { 1, -1, 1 }, { 1, -1, -1 }
+		}
+	};
+
+	namespace D {
+		const float T = (1. + std::sqrt(5.)) * 0.5;
+		const float R = 1. / T;
+	}
+	
+	const static PolyhedronData DodecahedronData{
+		{
+			{ 3, 11, 7, 15, 13 },
+			{ 7, 19, 17, 6, 15 },
+			{ 17, 4, 8, 10, 6 },
+			{ 8, 0, 16, 2, 10 },
+			{ 0, 12, 1, 18, 16 },
+			{ 6, 10, 2, 13, 15 },
+			{ 2, 16, 18, 3, 13 },
+			{ 18, 1, 9, 11, 3 },
+			{ 4, 14, 12, 0, 8 },
+			{ 11, 9, 5, 19, 7 },
+			{ 19, 5, 14, 4, 17 },
+			{ 1, 12, 14, 5, 9 }
+		},
+		{
+			{ -1, -1, -1}, { -1, -1, 1 }, { -1, 1, -1}, {-1, 1, 1},
+			{ 1, -1, -1}, { 1, -1, 1}, { 1, 1, -1}, { 1, 1, 1},
+			{ 0, -D::R, -D::T}, {0, -D::R, D::T}, { 0, D::R, -D::T }, { 0, D::R, D::T },
+			{ -D::R, -D::T, 0}, {-D::R, D::T, 0}, { D::R, -D::T, 0},  { D::R, D::T, 0},
+			{ -D::T, 0, -D::R}, { D::T, 0, -D::R}, { -D::T, 0, D::R}, {D::T, 0, D::R}
+		}
+	};
+
+
+	template<class HDS>
+	class PlatonicSolidBuilder : public CGAL::Modifier_base<HDS> {
+	public:
+		enum Type {
+			BOX, TETRAHEDRON, OCTAHEDRON, DODECAHEDRON, ICOSAHEDRON
+		};
+
+		PlatonicSolidBuilder(Type type, float size) : size(size), type(type) {}
 
 		void operator()(HDS& hds) {
 			using Vertex = HDS::Vertex;
@@ -17,22 +67,28 @@ namespace ofxCgalUtil {
 			
 			CGAL::Polyhedron_incremental_builder_3<HDS> builder(hds, true);
 
-			float s = scalarForNef / 2.;
+			float s = size * scalarForNef / 2.;
 
-			const std::vector<Point> points{
-				Point(-s, s, -s), Point(s, s, -s), Point(s, s, s), Point(-s, s, s),
-				Point(-s, -s, -s), Point(-s, -s, s), Point(s, -s, s), Point(s, -s, -s)
-			};
+			std::vector<std::vector<float>> points;
+			std::vector<std::vector<int>> indices;
 
-			const std::vector<std::vector<int>> indices{
-				{ 0, 3, 2, 1 }, { 0, 1, 7, 4 },
-				{ 1, 2, 6, 7 }, { 2, 3, 5, 6 },
-				{ 3, 0, 4, 5 }, { 4, 7, 6, 5 }
-			};
+			switch (type) {
+			case BOX: {
+				points = BoxData.points;
+				indices = BoxData.indices;
+			}break;
+			case DODECAHEDRON:{
+				points = DodecahedronData.points;
+				indices = DodecahedronData.indices;
+			}break;
+			default: {
+				ofLogError("ofxCgalUtil::RegularPolyhedronBuilder") << "unsupported type!";
+			} break;
+			}
 
 			builder.begin_surface(points.size(), indices.size());
 			for (auto& p : points) {
-				builder.add_vertex(p);
+				builder.add_vertex(Point(p[0] * s, p[1] * s, p[2] * s));
 			}
 			for (auto& f : indices) {
 				builder.begin_facet();
@@ -42,39 +98,12 @@ namespace ofxCgalUtil {
 				builder.end_facet();
 			}
 			builder.end_surface();
-
 		}
-
-
-	};
-
-	class HalfedgeMesh {
-	public:
-		HalfedgeMesh() {
-			BoxBuilder<Polyhedron<EPEC>::HalfedgeDS> builder;
-			polyhedron.delegate(builder);
-		}
-		void updateMesh() {
-			mesh = getMeshFromPoly(polyhedron);
-		}
-		void drawEdges() {
-			for (auto it = polyhedron.halfedges_begin(); it != polyhedron.halfedges_end(); ++it) {
-				auto p0 = it->vertex()->point();
-				auto p1 = it->prev()->vertex()->point();
-				glm::vec3 v0(CGAL::to_double(p0.x()), CGAL::to_double(p0.y()), CGAL::to_double(p0.z()));
-				glm::vec3 v1(CGAL::to_double(p1.x()), CGAL::to_double(p1.y()), CGAL::to_double(p1.z()));
-				v0 /= scalarForNef;
-				v1 /= scalarForNef;
-				ofDrawLine(v0, v1);
-			}
-		}
-
-		Polyhedron<EPEC>& getPoly() { return polyhedron; }
-		ofMesh& getMesh() { return mesh; }
 
 	private:
-		Polyhedron<EPEC> polyhedron;
-		ofMesh mesh;
+		const float size;
+		const Type type;
 	};
 
+	
 };

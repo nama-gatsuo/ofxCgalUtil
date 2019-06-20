@@ -36,6 +36,19 @@ namespace ofxCgalUtil {
 		return result;
 	}
 
+	template<class K>
+	static void drawEdges(Polyhedron<K> polyhedron) {
+		for (auto it = polyhedron.halfedges_begin(); it != polyhedron.halfedges_end(); ++it) {
+			auto p0 = it->vertex()->point();
+			auto p1 = it->prev()->vertex()->point();
+			glm::vec3 v0(CGAL::to_double(p0.x()), CGAL::to_double(p0.y()), CGAL::to_double(p0.z()));
+			glm::vec3 v1(CGAL::to_double(p1.x()), CGAL::to_double(p1.y()), CGAL::to_double(p1.z()));
+			v0 /= scalarForNef;
+			v1 /= scalarForNef;
+			ofDrawLine(v0, v1);
+		}
+	}
+
 	static double areaOfTriangle(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) {
 		glm::vec3 a(v2 - v0), b(v1 - v0);
 		float area = 0.5 * std::sqrt(glm::length2(a) * glm::length2(b) - glm::pow(glm::dot(a, b), 2.));
