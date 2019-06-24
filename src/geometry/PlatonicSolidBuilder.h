@@ -6,6 +6,9 @@
 namespace ofxCgalUtil {
 
 	struct PolyhedronData {
+		enum Type {
+			BOX, TETRAHEDRON, OCTAHEDRON, DODECAHEDRON, ICOSAHEDRON
+		};
 		std::vector<std::vector<int>> indices;
 		std::vector<std::vector<float>> points;
 	};
@@ -55,11 +58,9 @@ namespace ofxCgalUtil {
 	template<class HDS>
 	class PlatonicSolidBuilder : public CGAL::Modifier_base<HDS> {
 	public:
-		enum Type {
-			BOX, TETRAHEDRON, OCTAHEDRON, DODECAHEDRON, ICOSAHEDRON
-		};
+		
 
-		PlatonicSolidBuilder(Type type, float size) : size(size), type(type) {}
+		PlatonicSolidBuilder(PolyhedronData::Type type, float size) : size(size), type(type) {}
 
 		void operator()(HDS& hds) {
 			using Vertex = HDS::Vertex;
@@ -73,11 +74,11 @@ namespace ofxCgalUtil {
 			std::vector<std::vector<int>> indices;
 
 			switch (type) {
-			case BOX: {
+			case PolyhedronData::BOX: {
 				points = BoxData.points;
 				indices = BoxData.indices;
 			}break;
-			case DODECAHEDRON:{
+			case PolyhedronData::DODECAHEDRON:{
 				points = DodecahedronData.points;
 				indices = DodecahedronData.indices;
 			}break;
@@ -102,7 +103,7 @@ namespace ofxCgalUtil {
 
 	private:
 		const float size;
-		const Type type;
+		const PolyhedronData::Type type;
 	};
 
 	

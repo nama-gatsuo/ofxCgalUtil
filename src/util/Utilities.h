@@ -49,6 +49,12 @@ namespace ofxCgalUtil {
 		}
 	}
 
+	template<typename P>
+	static glm::vec3 toVec(P p) {
+		glm::vec3 v(CGAL::to_double(p.x()), CGAL::to_double(p.y()), CGAL::to_double(p.z()));
+		return v /= scalarForNef;
+	};
+
 	static double areaOfTriangle(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) {
 		glm::vec3 a(v2 - v0), b(v1 - v0);
 		float area = 0.5 * std::sqrt(glm::length2(a) * glm::length2(b) - glm::pow(glm::dot(a, b), 2.));
