@@ -27,7 +27,7 @@ namespace ofxCgalUtil {
 				const auto& vertices = mesh.getVertices();
 				for (auto& v : vertices) {
 					builder.add_vertex(Point(
-						int(v.x * scalarForNef), int(v.y * scalarForNef), int(v.z * scalarForNef)
+						v.x * scalarForNef, v.y * scalarForNef, v.z * scalarForNef
 					));
 				}
 
@@ -72,13 +72,7 @@ namespace ofxCgalUtil {
 
 			// create vertex
 			for (auto vi = in_poly.vertices_begin(); vi != in_poly.vertices_end(); ++vi) {
-				Polyhedron<K1>::Point_3 p(
-					CGAL::to_double(vi->point().x()),
-					CGAL::to_double(vi->point().y()),
-					CGAL::to_double(vi->point().z())
-				);
-
-				builder.add_vertex(p);
+				builder.add_vertex(vi->point());
 			}
 
 			Index index(in_poly.vertices_begin(), in_poly.vertices_end());

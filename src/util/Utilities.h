@@ -36,24 +36,21 @@ namespace ofxCgalUtil {
 		return result;
 	}
 
+	template<typename P>
+	static glm::vec3 toVec(P p) {
+		glm::vec3 v(CGAL::to_double(p.x()), CGAL::to_double(p.y()), CGAL::to_double(p.z()));
+		return v /= scalarForNef;
+	}
+
 	template<class K>
 	static void drawEdges(Polyhedron<K> polyhedron) {
 		for (auto it = polyhedron.halfedges_begin(); it != polyhedron.halfedges_end(); ++it) {
 			auto p0 = it->vertex()->point();
 			auto p1 = it->prev()->vertex()->point();
-			glm::vec3 v0(CGAL::to_double(p0.x()), CGAL::to_double(p0.y()), CGAL::to_double(p0.z()));
-			glm::vec3 v1(CGAL::to_double(p1.x()), CGAL::to_double(p1.y()), CGAL::to_double(p1.z()));
-			v0 /= scalarForNef;
-			v1 /= scalarForNef;
+			const glm::vec3& v0(toVec(p0)), v1(toVec(p1));
 			ofDrawLine(v0, v1);
 		}
 	}
-
-	template<typename P>
-	static glm::vec3 toVec(P p) {
-		glm::vec3 v(CGAL::to_double(p.x()), CGAL::to_double(p.y()), CGAL::to_double(p.z()));
-		return v /= scalarForNef;
-	};
 
 	static double areaOfTriangle(const glm::vec3& v0, const glm::vec3& v1, const glm::vec3& v2) {
 		glm::vec3 a(v2 - v0), b(v1 - v0);

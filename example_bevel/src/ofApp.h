@@ -14,5 +14,5 @@ public:
 public:
 	ofEasyCam cam;
 	ofMesh result;
-		
+	ofMesh base;
 };

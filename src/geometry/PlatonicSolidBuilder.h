@@ -116,5 +116,12 @@ namespace ofxCgalUtil {
 		const std::vector<std::vector<int>> indices;
 	};
 
-	
+	template<class K>
+	Polyhedron<K> getPlatonicSolid(PolyhedronData::Type type, float size) {
+		Polyhedron<K> poly;
+		PlatonicSolidBuilder<Polyhedron<K>::HalfedgeDS> builder(type, size);
+		poly.delegate(builder);
+		return poly;
+	}
+
 };

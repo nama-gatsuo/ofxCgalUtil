@@ -26,11 +26,7 @@ namespace ofxCgalUtil {
 
 		for (auto it = poly.vertices_begin(); it != poly.vertices_end(); ++it) {
 			const P& p = it->point();
-			float x = CGAL::to_double(p.x()) / double(scalarForNef);
-			float y = CGAL::to_double(p.y()) / double(scalarForNef);
-			float z = CGAL::to_double(p.z()) / double(scalarForNef);
-
-			mesh.addVertex(glm::vec3(x, y, z));
+			mesh.addVertex(toVec(p));
 			pointIndices[p] = count++;
 		}
 

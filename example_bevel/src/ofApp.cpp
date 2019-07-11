@@ -4,17 +4,18 @@
 void ofApp::setup(){
 
 	ofSetLogLevel(OF_LOG_VERBOSE);
-	
+	ofEnableDepthTest();
+
 	using namespace ofxCgalUtil;
 
 	ScopedTimer t("creation");
 
-	ofMesh m0 = ofMesh::box(200., 200., 200., 1, 1, 1);
-	m0 = mergeDuplicateComponents(m0);
-	auto p0 = getPolyFromMesh<EPEC>(m0);
+	base = ofMesh::box(200., 200., 200., 1, 1, 1);
+	base = mergeDuplicateComponents(base);
+	auto p0 = getPolyFromMesh<EPEC>(base);
 	auto p1 = bevelEdgesAndVerts(p0, 10., 40.);
-	//auto p1 = bevelAllVertices(p0, 40.);
 	result = getMeshFromPoly(p1);
+
 }
 
 void ofApp::update(){
@@ -23,6 +24,9 @@ void ofApp::update(){
 
 void ofApp::draw(){
 	cam.begin();
+	ofSetColor(255, 0, 0);
+	base.draw(OF_MESH_WIREFRAME);
+	ofSetColor(255);
 	result.draw(OF_MESH_WIREFRAME);
 	cam.end();
 }
