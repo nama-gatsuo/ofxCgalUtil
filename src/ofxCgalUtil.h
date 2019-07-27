@@ -11,6 +11,7 @@
 #include "operation/BooleanOp.h"
 #include "operation/Bevel.h"
 #include "PlatonicSolidBuilder.h"
+#include "util/Subdivision.h"
 
 #ifndef PI
 #define PI 3.14159265358979323846
