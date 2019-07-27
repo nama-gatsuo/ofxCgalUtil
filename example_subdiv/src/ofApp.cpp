@@ -7,11 +7,11 @@ void ofApp::setup(){
 
 	using namespace ofxCgalUtil;
 
-	// Get Box (Primitive is triangle)
-	//ofMesh m0 = mergeDuplicateComponents(ofMesh::box(80., 80., 80, 1, 1, 1));
-	//auto& p = getPolyFromMesh<EPIC>(m0);
-
-	// Get Box (Primitive is quadrilateral)
+	/// * Get Box as Primitive is triangle
+	// ofMesh m0 = mergeDuplicateComponents(ofMesh::box(80., 80., 80, 1, 1, 1));
+	// auto& p = getPolyFromMesh<EPIC>(m0);
+	/// * Get Box as Primitive is quadrilateral
+	// auto& p = getPlatonicSolid<EPIC>(PolyhedronData::BOX, 80);
 	
 	polys.assign(3, std::vector<Polyhedron<EPIC>>());
 	results.assign(3, std::vector<ofVboMesh>());
