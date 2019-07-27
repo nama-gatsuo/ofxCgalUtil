@@ -26,8 +26,13 @@ void ofApp::draw(){
 	cam.begin();
 	ofSetColor(255, 0, 0);
 	base.draw(OF_MESH_WIREFRAME);
+
 	ofSetColor(255);
+	result.draw(OF_MESH_FILL);
+
+	ofSetColor(0);
 	result.draw(OF_MESH_WIREFRAME);
+
 	cam.end();
 }
 

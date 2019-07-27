@@ -1,6 +1,17 @@
 # ofxCgalUtil
 openFrameworks addon to bridge CGAL. Currently supporting Windows only.
 
+## Example
+
+Bevel (cut edges/vertices)
+![](./example_bevel/screenshot.png)
+
+Boolean operation
+![](./example_boolean/screenshot.png)
+
+Subdivision
+![](./example_subdiv/screenshot.png)
+
 ## 0. About CGAL
 * The Computational Geometry Algorithms Library [CGAL](https://www.cgal.org/)
   * build binaries along with the instruction [here](https://www.cgal.org/download/windows.html).

@@ -13,6 +13,6 @@ public:
 	void keyPressed(int key);
 public:
 	ofEasyCam cam;
-	ofMesh result;
-		
+	std::vector<ofMesh> results;
+	std::vector<ofxCgalUtil::Polyhedron<ofxCgalUtil::EPIC>> edges;
 };
